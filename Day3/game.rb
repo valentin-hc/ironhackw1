@@ -26,6 +26,7 @@ class Action
 	end
 
 	def change_room
+		command = gets.chomp.upcase
 		case @current_room
 		when @world[@current_room.index]
 			case command
@@ -37,17 +38,28 @@ class Action
 				@current_room = @world[@current_room.exits[2][1]]
 			when @current_room.exits[3][0]
 				@current_room = @world[@current_room.exits[3][1]]
+			when "PICK UP FOOD"
+				case @current_room 
+				when @world[2]
+					puts "Berries, yummy ! Much better than the dirt in previous rooms"
+				else
+					puts "Picking up food, this looks bad, but I'm starving"
+				end
 			else
 				puts "Cant go there"
 			end
 		end
 	end
-	def command
-		command = gets.chomp.upcase
-	end
 	def play
 		while @current_room.index != 10
 			puts @current_room.description
+			exit_list = []
+			@current_room.exits.each do |exit|
+				if exit.size > 1
+					exit_list << "#{exit[0]}"
+				end
+			end
+			puts "Exits: #{exit_list}"
 			puts ">"
 			change_room
 		end

@@ -1,5 +1,5 @@
-# make exits an objcet
-
+#think about data structure
+#use objects
 class Room 
 	attr_reader :index, :description, :exits
 	def initialize(index, description, exits, objects = nil)

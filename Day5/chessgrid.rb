@@ -1,10 +1,11 @@
 require "pry"
 
 
+
 class Board
-	attr_reader :map, :grid
+	attr_reader :boardmap, :grid
 	def initialize
-		@map = [[:bR, :bN, :bB, :bQ, :bK, :bB, :bN, :bR],
+		@boardmap = [[:bR, :bN, :bB, :bQ, :bK, :bB, :bN, :bR],
 				[:bP, :bP, :bP, :bP, :bP, :bP, :bP, :bP],
 				[nil, nil, nil, nil, nil, nil, nil, nil],
 				[nil, nil, nil, nil, nil, nil, nil, nil],

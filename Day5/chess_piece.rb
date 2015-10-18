@@ -21,11 +21,7 @@ class Piece
 		tracker > 0
 	end
 	def output(new_pos)
-		if change_pos_valid?(new_pos) && new_pos != @position
-			puts "LEGAL"
-		else
-			puts "ILLEGAL"
-		end
+		@name != nil && change_pos_valid?(new_pos) && new_pos != @position
 	end
 end
 

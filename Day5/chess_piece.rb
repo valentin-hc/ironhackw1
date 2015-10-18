@@ -3,11 +3,12 @@ require "./chessgrid"
 
 
 class Piece
-	attr_accessor :name, :position
+	attr_accessor :name, :position, :mapgrid
 	def initialize(name, position)
 		@name = name
 		@position = position
 		@board = Board.new
+		@mapgrid = MapCreator.new.boardmap_grid_together
 	end
 	def pos_in_grid?(position)
 		tracker = 0
@@ -23,15 +24,100 @@ class Piece
 	def valid_and_start_not_nil?(new_pos)
 		@name != nil && change_pos_valid?(new_pos) && new_pos != @position
 	end
+	def new_pos_free?(new_pos)
+		@mapgrid.each do |piece|
+			if new_pos == piece[:position]
+				if piece[:name] == nil
+					return true
+				else
+					return false
+				end
+			end
+		end
+	end
 end
 
 class Rook < Piece
 	def same_position?(new_pos)
 		@position[0] == new_pos[0] || @position[1] == new_pos[1]
 	end
+	def going_up?(new_pos)
+		@position[1] < new_pos[1]
+	end
+	def going_down?(new_pos)
+		@position[1] > new_pos[1]
+	end
+	def going_right?(new_pos)
+		@position[0] < new_pos[0]
+	end
+	def going_left?(new_pos)
+		@position[0] > new_pos[0]
+	end
+
+	def path_free(new_pos)
+		if going_right?(new_pos)
+			next_free_right(new_pos)
+		elsif going_left?(new_pos)
+			next_free_left(new_pos)
+		elsif going_up?(new_pos)
+			next_free_up(new_pos)
+		else going_down?(new_pos)
+			next_free_down(new_pos)
+		end
+	end
+	
+	def next_free_right(new_pos)
+		track = 0
+		a = @position[0]
+		while a < new_pos[0]
+			a += 1
+			temp = [a, new_pos[1]]
+			if !new_pos_free?(temp)
+				track += 1	
+			end
+		end
+		track == 0
+	end
+	def next_free_left(new_pos)
+		track = 0
+		a = @position[0]
+		while a > new_pos[0]
+			a -= 1
+			temp = [a, new_pos[1]]
+			if !new_pos_free?(temp)
+				track += 1	
+			end
+		end
+		track == 0
+	end
+	def next_free_up(new_pos)
+		track = 0
+		a = @position[1]
+		while a < new_pos[1]
+			a += 1
+			temp = [new_pos[0], a]
+			if !new_pos_free?(temp)
+				track += 1	
+			end
+		end
+		track == 0
+	end
+	def next_free_down(new_pos)
+		track = 0
+		a = @position[1]
+		while a > new_pos[1]
+			a -= 1
+			temp = [new_pos[0], a]
+			if !new_pos_free?(temp)
+				track += 1	
+			end
+		end
+		track == 0
+	end
+
 
 	def change_pos_valid?(new_pos)
-		same_position?(new_pos) && pos_in_grid?(new_pos)
+		same_position?(new_pos) && pos_in_grid?(new_pos) && path_free(new_pos)
 		#binding.pry
 	end
 end
@@ -119,8 +205,8 @@ end
 
 
 
-rooktest = Rook.new(:wR, [8,1])
-#puts rooktest.valid_and_start_not_nil?([8,2])
+rooktest = Rook.new(:wR, [8,8])
+#puts rooktest.valid_and_start_not_nil?([1,8])
 pawntest = Pawn.new(:wP, [8,2])
 #puts pawntest.valid_and_start_not_nil?([8,2])
 blackpawntest = BlackPawn.new(:bP,[2,7])

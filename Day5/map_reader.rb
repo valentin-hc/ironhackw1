@@ -2,33 +2,14 @@ require "pry"
 require "./chessgrid"
 require "./chess_piece"
 
-class PieceCreator
-	attr_reader :startmap, :grid
+class MapReader
+	attr_reader :mapgrid
 	def initialize
-		@startmap = Board.new.boardmap
-		@grid = Board.new.grid
-	end
-	def boardmap_grid_together
-		new_array = []
-		together = @startmap.zip @grid
-		together.each do |array|
-			array[0].zip array[1][0]
-		end
-		together.each do |line|
-			a = 0
-			while a < 8
-				hash = {}
-				hash[:name] = line[0][a]
-				hash[:position] = line[1][a]
-				new_array << hash
-				a +=1
-			end
-		end
-		new_array
+		@mapgrid = MapCreator.new.boardmap_grid_together
 	end
 	def pieces_on_map
 		new_map = []
-		boardmap_grid_together.each do |piece|
+		@mapgrid.each do |piece|
 			case piece[:name]
 			when :wP
 				new_map << Pawn.new(piece[:name], piece[:position])
@@ -50,41 +31,13 @@ class PieceCreator
 		end
 		new_map
 	end
-	def new_pos_free?(new_pos)
-		pieces_on_map.each do |piece|
-			if new_pos == piece.position
-				if piece.name == nil
-					return true
-				else
-					return false
-				end
-			end
-		end
-	end
-
-	def check_move_valid(current_pos, new_pos)
-		pieces_on_map.each do |piece|
-			if current_pos == piece.position 
-				if new_pos_free?(new_pos) && piece.valid_and_start_not_nil?(new_pos)
-					puts "#{current_pos} to #{new_pos} LEGAL"
-				else
-					puts "#{current_pos} to #{new_pos} ILLEGAL"
-				end
-			end 
-		end
-	end
-	def check_moves(current_pos, new_pos)
-		comparing_pos = current_pos.zip new_pos
-		comparing_pos.each do |positions|
-			check_move_valid(positions[0], positions[1])
-		end
-	end
 end
 
-test = PieceCreator.new
+test = MapReader.new
 #puts test.startmap[0][0]
-#print test.grid[0][0]
+#binding.pry
+print test.mapgrid
 #binding.pry
 #test.check_move_valid([1,2],[1,3])
-test.check_moves([[1,2],[1,2],[1,2],[1,7],[1,7],[1,7],[1,7],[2,8],[2,8],[2,8],[5,2],[5,3]], [[1,3],[1,4],[1,5],[1,6],[1,5],[1,4],[2,6],[1,6],[3,6],[4,7],[5,3],[5,2]])
+#test.check_moves([[1,2],[1,2],[1,2],[1,7],[1,7],[1,7],[1,7],[2,8],[2,8],[2,8],[5,2],[5,3]], [[1,3],[1,4],[1,5],[1,6],[1,5],[1,4],[2,6],[1,6],[3,6],[4,7],[5,3],[5,2]])
 #puts test.pieces_on_map[35]

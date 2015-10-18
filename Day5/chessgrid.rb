@@ -27,6 +27,30 @@ end
 
 
 
-
+class MapCreator
+	attr_reader :startmap, :grid
+	def initialize
+		@startmap = Board.new.boardmap
+		@grid = Board.new.grid
+	end
+	def boardmap_grid_together
+		new_array = []
+		together = @startmap.zip @grid
+		together.each do |array|
+			array[0].zip array[1][0]
+		end
+		together.each do |line|
+			a = 0
+			while a < 8
+				hash = {}
+				hash[:name] = line[0][a]
+				hash[:position] = line[1][a]
+				new_array << hash
+				a +=1
+			end
+		end
+		new_array
+	end
+end
 
 

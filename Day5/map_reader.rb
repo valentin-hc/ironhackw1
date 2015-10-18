@@ -53,15 +53,23 @@ class PieceCreator
 	def new_pos_free?(new_pos)
 		pieces_on_map.each do |piece|
 			if new_pos == piece.position
-				piece.name == nil
+				if piece.name == nil
+					return true
+				else
+					return false
+				end
 			end
 		end
 	end
 
 	def check_move_valid(current_pos, new_pos)
 		pieces_on_map.each do |piece|
-			if current_pos == piece.position
-				puts "#{current_pos} to #{new_pos} #{piece.output(new_pos)}"
+			if current_pos == piece.position 
+				if new_pos_free?(new_pos) && piece.valid_and_start_not_nil?(new_pos)
+					puts "#{current_pos} to #{new_pos} LEGAL"
+				else
+					puts "#{current_pos} to #{new_pos} ILLEGAL"
+				end
 			end 
 		end
 	end

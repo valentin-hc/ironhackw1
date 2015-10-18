@@ -20,7 +20,7 @@ class Piece
 		end
 		tracker > 0
 	end
-	def output(new_pos)
+	def valid_and_start_not_nil?(new_pos)
 		@name != nil && change_pos_valid?(new_pos) && new_pos != @position
 	end
 end
@@ -120,20 +120,20 @@ end
 
 
 rooktest = Rook.new(:wR, [8,1])
-#puts rooktest.output([8,2])
+#puts rooktest.valid_and_start_not_nil?([8,2])
 pawntest = Pawn.new(:wP, [8,2])
-#puts pawntest.output([8,2])
+#puts pawntest.valid_and_start_not_nil?([8,2])
 blackpawntest = BlackPawn.new(:bP,[2,7])
-#blackpawntest.output([2,6])
+#blackpawntest.valid_and_start_not_nil?([2,6])
 knighttest = Knight.new(:wK, [2,1])
 #binding.pry
-#knighttest.output([1,3])
+#knighttest.valid_and_start_not_nil?([1,3])
 bishoptest = Bishop.new(:wB, [5,5])
 #binding.pry
-#bishoptest.output([6,6])
+#bishoptest.valid_and_start_not_nil?([6,6])
 queentest = Queen.new(:wQ, [4,1])
 #binding.pry
-#queentest.output([4,8])
+#queentest.valid_and_start_not_nil?([4,8])
 kingtest = King.new(:wK, [5,1])
 #binding.pry
-#kingtest.output([5,2])
+#kingtest.valid_and_start_not_nil?([5,2])

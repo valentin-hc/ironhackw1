@@ -36,7 +36,7 @@ end
 test = MapReader.new
 #puts test.startmap[0][0]
 #binding.pry
-print test.mapgrid
+#print test.mapgrid
 #binding.pry
 #test.check_move_valid([1,2],[1,3])
 #test.check_moves([[1,2],[1,2],[1,2],[1,7],[1,7],[1,7],[1,7],[2,8],[2,8],[2,8],[5,2],[5,3]], [[1,3],[1,4],[1,5],[1,6],[1,5],[1,4],[2,6],[1,6],[3,6],[4,7],[5,3],[5,2]])

@@ -35,11 +35,15 @@ class Piece
 			end
 		end
 	end
-end
-
-class Rook < Piece
-	def same_position?(new_pos)
-		@position[0] == new_pos[0] || @position[1] == new_pos[1]
+	def get_name(position)
+		@mapgrid.each do |piece|
+			if position == piece[:position]
+				piece[:name]
+			end
+		end
+	end
+	def is_friend?(new_pos)
+		get_name(@position)[0] == get_name(new_pos)[0]
 	end
 	def going_up?(new_pos)
 		@position[1] < new_pos[1]
@@ -52,6 +56,13 @@ class Rook < Piece
 	end
 	def going_left?(new_pos)
 		@position[0] > new_pos[0]
+	end
+
+end
+
+class Rook < Piece
+	def same_position?(new_pos)
+		@position[0] == new_pos[0] || @position[1] == new_pos[1]
 	end
 
 	def path_free(new_pos)
@@ -72,7 +83,7 @@ class Rook < Piece
 		while a < new_pos[0]
 			a += 1
 			temp = [a, new_pos[1]]
-			if !new_pos_free?(temp)
+			unless new_pos_free?(temp) && !isfriend?(temp)
 				track += 1	
 			end
 		end
@@ -84,7 +95,7 @@ class Rook < Piece
 		while a > new_pos[0]
 			a -= 1
 			temp = [a, new_pos[1]]
-			if !new_pos_free?(temp)
+			unless new_pos_free?(temp) && !isfriend?(temp)
 				track += 1	
 			end
 		end
@@ -96,7 +107,7 @@ class Rook < Piece
 		while a < new_pos[1]
 			a += 1
 			temp = [new_pos[0], a]
-			if !new_pos_free?(temp)
+			unless new_pos_free?(temp) && !isfriend?(temp)
 				track += 1	
 			end
 		end
@@ -108,7 +119,7 @@ class Rook < Piece
 		while a > new_pos[1]
 			a -= 1
 			temp = [new_pos[0], a]
-			if !new_pos_free?(temp)
+			unless new_pos_free?(temp) && !isfriend?(temp)
 				track += 1	
 			end
 		end
@@ -205,7 +216,8 @@ end
 
 
 
-rooktest = Rook.new(:wR, [8,8])
+rooktest = Rook.new(:wR, [1,1])
+#puts rooktest.is_friend?([1,2])
 #puts rooktest.valid_and_start_not_nil?([1,8])
 pawntest = Pawn.new(:wP, [8,2])
 #puts pawntest.valid_and_start_not_nil?([8,2])
